@@ -79,10 +79,10 @@
             </div>
             </div>`
                 enterName();
-            }, 8000)  //8000
+            }, 8000)
 
 
-        }, 1000)  //1000
+        }, 1000)
 
     }
 
@@ -105,7 +105,6 @@
             input = document.querySelector("#name");
 
             document.querySelector(".btn-submit").addEventListener("click", () => {
-                console.log("This is name of the player: ", input.value);
                 if (input.value == "") {
                     // if input is left empty then nothing will happen, during this form will show "please fill out this field"
                 }
@@ -113,7 +112,7 @@
                     body.innerHTML = '<div class="container container-blur"></div> <div class="rules-box"><h3 class="rules-head"> RULES </h3><ol class="rules-container"><li class="rules">Use arrow keys to move the snake.</li><li class="rules">If you hit your tail you will lose a live.</li></ol><button onclick="snakeComes()" class="rules-ok">OK</button></div>';
                 }
             })
-        }, 8000)//8000
+        }, 8000)
     }
 
 
