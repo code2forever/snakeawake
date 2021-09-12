@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake :-: Awake</title>
+    <link rel='stylesheet' type='text/css' media='screen' href='style.css'>
+
+</head>
+
+<body>
+
+</body>
+<script>
+
+    window.onload = () => {
+        letsPlay();
+    };
+
+    window.addEventListener("click", function () {
+        click.play();
+    })
+
+
+    const click = new Audio("sound/movement.wav");
+    const gameMusic = new Audio("sound/thescore.mp3");
+    gameMusic.volume = 0.4;
+    gameMusic.loop = true;//to replay the music everytime it ends.
+    const snakeMove = new Audio("sound/move.mp3");
+    snakeMove.volume = 1;
+    const foodEaten = new Audio("sound/crunchyeat.mp3");
+    const topScore = new Audio("sound/sparkle.mp3");
+    const hitTail = new Audio("sound/snare.wav");
+
+    let body = document.querySelector("body");
+    let input;
+
+    const letsPlay = () => {
+        let btnState = 1;
+        body.innerHTML = `<div class="container">
+        <div class="strtCont">
+        <h1 class="head">Snake:-:Awake</h1>
+        <button class="btn" onclick="myCompany()">Click to play</button>
+        </div>
+        </div>`
+        btnRotate = setInterval(() => {
+            let btn = document.querySelector(".btn");
+            if (btnState % 2 === 0) {
+                btn.classList.remove("btn-rotate");
+                btnState++;
+            }
+            else {
+                btn.classList.add("btn-rotate");
+                btnState++;
+            }
+        }, 1500);
+    }
+
+
+
+
+    const myCompany = () => {
+        clearInterval(btnRotate);
+        document.querySelector('.btn').innerHTML = "Setting Up...";
+        setTimeout(() => {
+            setTimeout(() => {
+                body.innerHTML = `<div class="container">
+            <div class="creator">
+            <span>Created & Designed By Codeforever</span>
+            </div>
+            </div>`
+            })
+            setTimeout(() => {
+                body.innerHTML = `<div class="container">
+            <div class="creator">
+            <span>Co-powered By- Klames</span>
+            </div>
+            </div>`
+                enterName();
+            }, 8000)  //8000
+
+
+        }, 1000)  //1000
+
+    }
+
+
+    const enterName = () => {
+        setTimeout(() => {
+
+            body.innerHTML = `<div class="container">
+                <div class=box>
+                <div class="snake-image"></div>
+                <div class="form-subcont">
+                <form class="nameform">
+                <input type="text" id="name" placeholder="Enter your name" spellcheck="false" required>
+                <button type="submit" class="btn-submit">Continue</button>
+                </form>
+                </div>
+                <div class="snake-image"></div>
+                </div>
+                </div>`;
+            input = document.querySelector("#name");
+
+            document.querySelector(".btn-submit").addEventListener("click", () => {
+                console.log("This is name of the player: ", input.value);
+                if (input.value == "") {
+                    // if input is left empty then nothing will happen, during this form will show "please fill out this field"
+                }
+                else {
+                    body.innerHTML = '<div class="container container-blur"></div> <div class="rules-box"><h3 class="rules-head"> RULES </h3><ol class="rules-container"><li class="rules">Use arrow keys to move the snake.</li><li class="rules">If you hit your tail you will lose a live.</li></ol><button onclick="snakeComes()" class="rules-ok">OK</button></div>';
+                }
+            })
+        }, 8000)//8000
+    }
+
+
+
+    const snakeComes = () => {
+        var highScoreVal;
+        var youMadeTopScore = true;
+
+        if (localStorage.getItem('highScore') === null) {
+            highScoreVal = 0;
+            localStorage.setItem('highScore', highScoreVal);
+        }
+        else {
+            highScoreVal = localStorage.getItem('highScore');
+        }
+
+        body.innerHTML = `<div class="container">
+            <div class="sub-cont">
+            <div class="score-board">
+                <span>Player : ${input.value}</span><span id="score">Score : 0</span><span id="highScore">Top Score : ${highScoreVal}</span><span id="lives">Lives : <img class="heart" src="images/heart.png"><img class="heart" src="images/heart.png"><img class="heart" src="images/heart.png"></span>
+            </div>
+                <canvas id="gc" width="400" height="400"></canvas>
+            </div>
+            </div>
+            `;
+
+        // confirm("Click any key to continue.Use direction keys to move the snake");
+
+        var dx = dy = 0;
+        var livesLeft = 3;
+        var score = 0;
+        var buttonClicked = false;
+        var canv = document.getElementById("gc");
+        var px = py = 10;
+        var ax = ay = 15;
+        var trail = [];
+        var tail = 5;
+
+
+        const game = () => {
+
+            //to start playing the music as player press the arrow keys.
+            if (buttonClicked === true) {
+                gameMusic.play();
+            }
+            else {
+                gameMusic.pause();
+            }
+
+            const resetAllValues = () => {
+                dx = dy = 0;
+                px = 10;
+                py = 10;
+                ax = ay = 15;
+                trail = [];
+                tail = 5;
+                livesLeft = 3;
+                score = 0;
+                buttonClicked = false;
+            }
+
+            const scoreBoardUpdate = () => {
+                if (score > highScoreVal) {
+
+                    if (youMadeTopScore) {
+                        topScore.play();//sound when topScore is achieved.
+                        youMadeTopScore = false;
+                    }
+
+                    //using localstorage for storing highscore.
+                    localStorage.setItem('highScore', score);
+                    highScoreVal = localStorage.getItem('highScore');
+                }
+                document.getElementById("score").innerHTML = `Score : ${score}`;
+                document.getElementById("highScore").innerHTML = `Top Score : ${highScoreVal}`;
+
+
+                switch (livesLeft) {
+                    case 1:
+                        document.getElementById("lives").innerHTML = 'Lives : <img class="heart" src="images/heart.png">';
+                        break;
+                    case 2:
+                        document.getElementById("lives").innerHTML = 'Lives : <img class="heart" src="images/heart.png"><img class="heart" src="images/heart.png">';
+                        break;
+                    case 3:
+                        document.getElementById("lives").innerHTML = 'Lives : <img class="heart" src="images/heart.png"><img class="heart" src="images/heart.png"><img class="heart" src="images/heart.png">';
+                        break;
+                    default:
+                        document.getElementById("lives").innerHTML = 'Lives :';
+                }
+
+            }
+            px += dx;
+            py += dy;
+
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, canv.width, canv.height);
+
+            //NOTE: Always keep in mind that coordinates are with respect to the top-left of the rectangle box(snake's head).
+            if (px < 0) {
+                px = 19; //so that it directly jump to the right most side without stucking out of the screen.
+            }
+
+            if (px > 19) {  //here it will work when px==20 as 20 will come just after 19.
+                px = 0;
+            }
+
+            if (py < 0) {
+                py = 19;
+            }
+
+            if (py > 19) {
+                py = 0;
+            }
+
+            ctx.fillStyle = "limegreen";
+            for (var i = 0; i < trail.length; i++) {
+                ctx.fillRect(trail[i].x * 20, trail[i].y * 20, 18, 18);
+                if (trail[i].x === px && trail[i].y === py) {
+                    if (buttonClicked === true) {  //this is done to start decreasing lives only after movement of snakes starts.
+                        livesLeft -= 1;
+                        hitTail.play();
+                        scoreBoardUpdate();
+                    }
+                    tail = 5;
+                }
+            }
+
+            if (livesLeft === 0) {
+                gameMusic.pause();
+                gameMusic.currentTime = 0;
+                if (confirm("Game Over... You have eaten your tail!!\nClick OK to play again.\nCancel to return to main menu") === false) {
+                    document.location.href = "/index.html";
+                }
+                else {
+                    resetAllValues();//reset all values to start the game again.
+                    scoreBoardUpdate();
+                }
+            }
+
+            trail.push({ x: px, y: py });
+
+            while (trail.length > tail) {
+                trail.shift();
+            }
+
+            if (px === ax && py === ay) {
+                foodEaten.play();
+                score += 5;
+                scoreBoardUpdate();
+                tail++;
+                ax = Math.floor(Math.random() * 20);
+                ay = Math.floor(Math.random() * 20);
+            }
+            ctx.fillStyle = "red";
+            ctx.fillRect(ax * 20, ay * 20, 18, 18);
+
+        }
+
+        const keyPush = (evt) => {
+            switch (evt.keyCode) {
+                case 37:
+                    snakeMove.play();
+                    buttonClicked = true;
+                    dx = -1;
+                    dy = 0;
+                    break;
+                case 38:
+                    snakeMove.play();
+                    buttonClicked = true;
+                    dy = -1; dx = 0;
+                    break;
+                case 39:
+                    snakeMove.play();
+                    buttonClicked = true;
+                    dx = 1; dy = 0;
+                    break;
+                case 40:
+                    snakeMove.play();
+                    buttonClicked = true;
+                    dy = 1;
+                    dx = 0;
+                    break;
+
+            }
+        }
+
+        ctx = canv.getContext("2d");
+        document.addEventListener("keydown", keyPush);
+        setInterval(game, 1000 / 15);
+    }
+
+</script>
+
+</html>
