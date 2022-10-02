@@ -24,7 +24,7 @@
     })
 
 
-    const click = new Audio("sound/movement.wav");
+    const click = new Audio("sound/click.mp3");
     const gameMusic = new Audio("sound/thescore.mp3");
     gameMusic.volume = 0.4;
     gameMusic.loop = true;//to replay the music everytime it ends.
@@ -58,30 +58,36 @@
         }, 1500);
     }
 
+var loading1,loading2,loading3;
 
-
+const skipIntro=()=>{
+    clearTimeout(loading1);
+    clearTimeout(loading2);
+    clearTimeout(loading3);
+    document.removeEventListener('keyup',skipIntro);
+    enterName();
+}
 
     const myCompany = () => {
         clearInterval(btnRotate);
         document.querySelector('.btn').innerHTML = "Setting Up...";
+        document.addEventListener('keyup', skipIntro)
         setTimeout(() => {
-            setTimeout(() => {
+            loading1=setTimeout(() => {
                 body.innerHTML = `<div class="container">
             <div class="creator">
-            <span>Created & Designed By Codeforever</span>
+            <span>Created & Designed By Kalash</span>
             </div>
             </div>`
-            })
-            setTimeout(() => {
+            })  
+            loading2=setTimeout(() => {
                 body.innerHTML = `<div class="container">
             <div class="creator">
-            <span>Co-powered By- Klames</span>
+            <span>Co-powered By- Myself</span>
             </div>
             </div>`
-                enterName();
-            }, 8000)
-
-
+        }, 8000)
+            loading3=setTimeout(()=>{enterName()},16000)
         }, 1000)
 
     }
@@ -105,6 +111,7 @@
             input = document.querySelector("#name");
 
             document.querySelector(".btn-submit").addEventListener("click", () => {
+                console.log("This is name of the player: ", input.value);
                 if (input.value == "") {
                     // if input is left empty then nothing will happen, during this form will show "please fill out this field"
                 }
@@ -112,13 +119,14 @@
                     body.innerHTML = '<div class="container container-blur"></div> <div class="rules-box"><h3 class="rules-head"> RULES </h3><ol class="rules-container"><li class="rules">Use arrow keys to move the snake.</li><li class="rules">If you hit your tail you will lose a live.</li></ol><button onclick="snakeComes()" class="rules-ok">OK</button></div>';
                 }
             })
-        }, 8000)
+        })
     }
 
 
 
     const snakeComes = () => {
         var highScoreVal;
+        var youMadeTopScore = true;
 
         if (localStorage.getItem('highScore') === null) {
             highScoreVal = 0;
@@ -141,15 +149,15 @@
         // confirm("Click any key to continue.Use direction keys to move the snake");
 
         var dx = dy = 0;
+        var livesLeft = 3;
+        var score = 0;
+        var buttonClicked = false;
         var canv = document.getElementById("gc");
         var px = py = 10;
         var ax = ay = 15;
         var trail = [];
         var tail = 5;
-        var youMadeTopScore = true;
-        var livesLeft = 3;
-        var score = 0;
-        var buttonClicked = false;
+
 
         const game = () => {
 
@@ -171,7 +179,6 @@
                 livesLeft = 3;
                 score = 0;
                 buttonClicked = false;
-                youMadeTopScore=true;
             }
 
             const scoreBoardUpdate = () => {
@@ -245,7 +252,7 @@
                 gameMusic.pause();
                 gameMusic.currentTime = 0;
                 if (confirm("Game Over... You have eaten your tail!!\nClick OK to play again.\nCancel to return to main menu") === false) {
-                    document.location.href = "/snakeawake";
+                    document.location.href = "/index.html";
                 }
                 else {
                     resetAllValues();//reset all values to start the game again.
