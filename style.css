@@ -31,11 +31,11 @@
                 transform: rotateZ(0deg);   
             }
             33% {
-                transform: rotateZ(20deg);
+                transform: rotateZ(10deg);
             }
 
             66% {
-                transform: rotateZ(-20deg);
+                transform: rotateZ(-10deg);
             }
 
             100% {
@@ -136,10 +136,11 @@
         
         .btn-rotate{
             animation-name: movebtn;
-            animation-delay: 0s;
+            animation-delay: 1s;
             animation-fill-mode: forwards;
             animation-iteration-count: infinite;
-            animation-duration: 0.25s;
+            animation-duration: 0.2s;
+            animation-timing-function: ease-in-out;
         }
 
         .btn:focus {
@@ -355,6 +356,7 @@
             flex-basis: calc(400px+var(--score-board-height));
             width:90vw;
             background: center/cover no-repeat url("images/snake-wall.jpg");
+            background-position-y: -58px;
         }
 
         .score-board{
@@ -380,8 +382,8 @@
         }
 
         .heart{
-            width: 2vw;
-            height: 2vh;
+            width: 2.1vw;
+            height: 2.1vh;
             background: center/contain no-repeat;
             margin:auto 0.4vw;
         }
