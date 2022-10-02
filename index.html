@@ -61,10 +61,10 @@
 var loading1,loading2,loading3;
 
 const skipIntro=()=>{
+    document.removeEventListener('keyup',skipIntro);
     clearTimeout(loading1);
     clearTimeout(loading2);
     clearTimeout(loading3);
-    document.removeEventListener('keyup',skipIntro);
     enterName();
 }
 
