@@ -71,9 +71,9 @@ const skipIntro=()=>{
     const myCompany = () => {
         clearInterval(btnRotate);
         document.querySelector('.btn').innerHTML = "Setting Up...";
-        document.addEventListener('keyup', skipIntro)
         setTimeout(() => {
             loading1=setTimeout(() => {
+                document.addEventListener('keyup', skipIntro)//press any key to skip intro
                 body.innerHTML = `<div class="container">
             <div class="creator">
             <span>Created & Designed By Kalash</span>
