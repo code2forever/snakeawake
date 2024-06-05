@@ -13,7 +13,7 @@ Snake Awake is a modern take on the classic snake game, developed using HTML, CS
 
 ## Snapshots
 
-![Screenshot 1](readme-image/ss_01.png)
+![Screenshot 1](readme-image/ss_01.JPG)
 *Initialization*
 
 ![Screenshot 2](readme-image/ss_02.png)
@@ -31,7 +31,7 @@ Snake Awake is a modern take on the classic snake game, developed using HTML, CS
 
 ## To play
 
-[Click to play](https://code2forever.github.io/snakeawake/)
+vist the [live](https://code2forever.github.io/snakeawake/) link.
 
 ## How to Play
 
